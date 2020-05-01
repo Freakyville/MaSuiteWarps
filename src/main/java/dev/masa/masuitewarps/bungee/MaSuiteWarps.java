@@ -12,6 +12,8 @@ import dev.masa.masuitewarps.bungee.controllers.ListController;
 import dev.masa.masuitewarps.bungee.controllers.SetController;
 import dev.masa.masuitewarps.bungee.controllers.TeleportController;
 import dev.masa.masuitewarps.core.services.WarpService;
+import io.github.freakyville.hubqueue.api.API;
+import io.github.freakyville.hubqueue.apireal.HubQueueAPI;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -26,6 +28,7 @@ import java.io.IOException;
 public class MaSuiteWarps extends Plugin implements Listener {
 
     public WarpService warpService;
+    private final API hubQueueAPI = HubQueueAPI.getInstance();
 
     public Utils utils = new Utils();
     public BungeeConfiguration config = new BungeeConfiguration();
@@ -50,7 +53,7 @@ public class MaSuiteWarps extends Plugin implements Listener {
     public String warpUpdated = "";
     public String warpDeleted = "";
 
-    private TeleportController teleportController = new TeleportController(this);
+    private TeleportController teleportController = new TeleportController(this, hubQueueAPI);
     private SetController set = new SetController(this);
     private DeleteController delete = new DeleteController(this);
     private ListController list = new ListController(this);

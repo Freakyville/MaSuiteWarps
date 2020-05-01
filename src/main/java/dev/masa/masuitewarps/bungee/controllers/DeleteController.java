@@ -1,5 +1,6 @@
 package dev.masa.masuitewarps.bungee.controllers;
 
+import dev.masa.masuitecore.bungee.Utils;
 import dev.masa.masuitecore.core.channels.BungeePluginChannel;
 import dev.masa.masuitewarps.bungee.MaSuiteWarps;
 import dev.masa.masuitewarps.core.models.Warp;
@@ -10,7 +11,8 @@ import java.util.Map;
 
 public class DeleteController {
 
-    private MaSuiteWarps plugin;
+    private final MaSuiteWarps plugin;
+    private final Utils utils = new Utils();
 
     public DeleteController(MaSuiteWarps plugin) {
         this.plugin = plugin;
@@ -18,7 +20,7 @@ public class DeleteController {
 
     public void deleteWarp(ProxiedPlayer player, String name) {
         Warp warp = plugin.warpService.getWarp(name);
-        if (warp == null) {
+        if (warp == null || !utils.sameServerGroup(player.getServer().getInfo().getName(), warp.getServer())) {
             plugin.formator.sendMessage(player, plugin.warpNotFound);
             return;
         }

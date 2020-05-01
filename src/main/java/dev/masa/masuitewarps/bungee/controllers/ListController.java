@@ -1,5 +1,6 @@
 package dev.masa.masuitewarps.bungee.controllers;
 
+import dev.masa.masuitecore.bungee.Utils;
 import dev.masa.masuitewarps.bungee.MaSuiteWarps;
 import dev.masa.masuitewarps.core.models.Warp;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ListController {
 
     private MaSuiteWarps plugin;
+    private final Utils utils = new Utils();
 
     public ListController(MaSuiteWarps plugin) {
         this.plugin = plugin;
@@ -29,6 +31,11 @@ public class ListController {
         String split = plugin.formator.colorize(plugin.listWarpSplitter);
         for (Warp warp : warps) {
             if (warp.isGlobal() && !warp.isHidden()) {
+                if (!utils.sameServerGroup(p.getServer().getInfo().getName(), warp.getServer())) {
+                    i++;
+                    continue;
+                }
+
                 global.addExtra(buildAndAddListElement(warp));
                 if (i != warps.size() - 1) {
                     global.addExtra(split);
